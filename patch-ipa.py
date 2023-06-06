@@ -1,9 +1,6 @@
-import argparse
 import plistlib
 import shutil
 import zipfile
-from PIL import Image
-
 print('Opening IPA')
 with zipfile.ZipFile("unpatched.ipa","r") as stock_ipa:
     print('Extracting to workspace/vendetta')
