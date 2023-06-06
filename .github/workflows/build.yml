@@ -66,8 +66,7 @@ jobs:
       - name: Install Vendetta
         run: |
           ${{ github.workspace }}/Azule/azule -U -i renamed.ipa -b dev.beefers.vendetta -f tweak.deb -f orion.deb -o patched.ipa -o ipa -n $(cat version.txt)-${{ steps.get_commit.outputs.COMMIT }}
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
+
       - name: Upload IPA
         uses: actions/upload-artifact@v2
         with:

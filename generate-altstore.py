@@ -30,6 +30,8 @@ source = {
 
 
 for file in os.listdir("ipa"):
+    if not file.endswith(".ipa"):
+        continue
     numeric_version = int(file.split("-")[0])
     commithash = file.split("-")[1]
 
