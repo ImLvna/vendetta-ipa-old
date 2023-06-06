@@ -3,7 +3,7 @@ from datetime import datetime
 import os
 
 with open("version.txt", "r", encoding='utf-8') as version_file:
-    version = version_file.read()
+    version = version_file.readline().strip()
 
 
 source = {
