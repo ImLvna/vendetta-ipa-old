@@ -35,8 +35,8 @@ for file in os.listdir("ipa"):
     numeric_version = int(file.split("-")[0])
     commithash = file.split("-")[1]
 
-    isodate = check_output(["/bin/bash" "-c" f"cd Vendetta;git show -s --format=%ci {commithash}"]).decode("utf-8").split(" ", maxsplit=1)[0]
-    commitdesc = check_output(["/bin/bash" "-c" f"cd Vendetta;git show -s --format=%s {commithash}"]).decode("utf-8")
+    isodate = check_output(["/bin/bash", "-c", f"cd Vendetta;git show -s --format=%ci {commithash}"]).decode("utf-8").split(" ", maxsplit=1)[0]
+    commitdesc = check_output(["/bin/bash", "-c", f"cd Vendetta;git show -s --format=%s {commithash}"]).decode("utf-8")
 
 
     source["apps"][0]["versions"].append(
