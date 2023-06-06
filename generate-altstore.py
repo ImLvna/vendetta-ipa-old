@@ -2,7 +2,7 @@ import json
 import os
 from subprocess import check_output
 
-with open("version.txt", "r", 'utf-8') as version_file:
+with open("version.txt", "r", encoding='utf-8') as version_file:
     version = version_file.read()
 
 source = {
