@@ -1,9 +1,10 @@
 import json
+from datetime import datetime
 import os
-from subprocess import check_output
 
 with open("version.txt", "r", encoding='utf-8') as version_file:
     version = version_file.read()
+
 
 source = {
     "name": "Vendetta",
@@ -23,31 +24,17 @@ source = {
             "localizedDescription": "A mod for Discord",
             "iconURL": "https://avatars.githubusercontent.com/u/112445065?s=500",
             "tintColor": "#3ab8ba",
-            "versions": [],
+            "versions": [
+                {
+                    "version": f"0.0.{version}",
+                    "date": datetime.now().isoformat(),
+                    "localizedDescription": f"{os.environ.get('DESC')} - {os.environ.get('COMMIT')}",
+                    "downloadURL": "https://imlvna.github.io/vendetta-ipa/Vendetta.ipa"
+                }
+            ],
         }
     ]
 }
-
-
-for file in os.listdir("pages/ipa"):
-    if not file.endswith(".ipa"):
-        continue
-    numeric_version = int(file.split("-")[0])
-    commithash = file.split("-")[1].replace('.ipa', '')
-
-    isodate = check_output(["/bin/bash", "-c", f"cd Vendetta;git show -s --format=%ci {commithash}"]).decode("utf-8").split(" ", maxsplit=1)[0]
-    commitdesc = check_output(["/bin/bash", "-c", f"cd Vendetta;git show -s --format=%s {commithash}"]).decode("utf-8")
-
-
-    source["apps"][0]["versions"].append(
-        {
-            "version": f"0.0.{numeric_version}",
-            "date": isodate,
-            "localizedDescription": commitdesc,
-            "downloadURL": "https://imlvna.github.io/vendetta-ipa/ipas/" + file
-        }
-    )
-
 
 with open("pages/vendetta.json", "w", encoding='utf-8') as source_file:
     json.dump(source, source_file, indent=4)
