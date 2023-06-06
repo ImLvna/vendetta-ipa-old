@@ -57,12 +57,7 @@ jobs:
           echo "COMMIT=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
           echo "DESC=$(git log -1 --format=%s)" >> "$GITHUB_OUTPUT"
           cd ..
-    
-      - name: Bump Version
-        id: numerical-version
-        run: |
-          echo $(( $(cat version.txt) + 1 )) > version.txt
-          echo "NUM=$(cat version.txt)" > "$GITHUB_OUTPUT"
+
     
       - name: Move around files
         run: |
@@ -72,16 +67,6 @@ jobs:
         run: |
           ${{ github.workspace }}/Azule/azule -U -i renamed.ipa -b dev.beefers.vendetta -f tweak.deb -f orion.deb -o pages -n Vendetta
 
-    
-    
-      - name: Commit IPA
-        run: |
-          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-          git add version.txt
-          git commit -m "Update Vendetta.ipa to ${{ steps.get_commit.outputs.COMMIT }}"
-          git push
-
       
       - name: Generate Altstore Source
         run: |
@@ -89,6 +74,7 @@ jobs:
         env:
           COMMIT: ${{ steps.get_commit.outputs.COMMIT }}
           DESCRIPTION: ${{ steps.get_commit.outputs.DESC }}
+          NUMBER: ${{ github.run_number }}
     
 
       - name: Setup Pages

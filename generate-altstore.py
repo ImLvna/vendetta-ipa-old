@@ -2,10 +2,6 @@ import json
 from datetime import datetime
 import os
 
-with open("version.txt", "r", encoding='utf-8') as version_file:
-    version = version_file.readline().strip()
-
-
 source = {
     "name": "Vendetta",
     "identifier": "dev.beefers.vendetta",
@@ -26,7 +22,7 @@ source = {
             "tintColor": "#3ab8ba",
             "versions": [
                 {
-                    "version": f"0.0.{version}",
+                    "version": f"0.0.{os.environ.get('NUMBER')}",
                     "date": datetime.now().isoformat(),
                     "localizedDescription": f"{os.environ.get('DESCRIPTION')} - {os.environ.get('COMMIT')}",
                     "downloadURL": "https://imlvna.github.io/vendetta-ipa/Vendetta.ipa"
