@@ -71,13 +71,13 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: Vendetta.ipa
-          path: ipas/${{ steps.numerical-version.outputs.NUM }}-${{ steps.get_commit.outputs.COMMIT }}.ipa
+          path: ipa/${{ steps.numerical-version.outputs.NUM }}-${{ steps.get_commit.outputs.COMMIT }}.ipa
     
       - name: Commit IPA
         run: |
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add ipas/${{ steps.numerical-version.outputs.NUM }}-${{ steps.get_commit.outputs.COMMIT }}.ipa
+          git add ipa/${{ steps.numerical-version.outputs.NUM }}-${{ steps.get_commit.outputs.COMMIT }}.ipa
           git add version.txt
           git commit -m "Update Vendetta.ipa to ${{ steps.get_commit.outputs.COMMIT }}"
           git push
