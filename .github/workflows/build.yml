@@ -85,7 +85,7 @@ jobs:
       - name: Move around files
         run: |
           mkdir pages
-          mv ipas pages
+          mv ipa pages
       - name: Generate Altstore Source
         run: |
           python3 ./generate-altstore.py
