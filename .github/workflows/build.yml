@@ -82,14 +82,14 @@ jobs:
           git commit -m "Update Vendetta.ipa to ${{ steps.get_commit.outputs.COMMIT }}"
           git push
 
-      - name: Generate Altstore Source
-        run: |
-          python3 ./generate-altstore.py
-    
       - name: Move around files
         run: |
           mkdir pages
           mv ipas pages
+      - name: Generate Altstore Source
+        run: |
+          python3 ./generate-altstore.py
+    
 
       - name: Setup Pages
         uses: actions/configure-pages@v3
