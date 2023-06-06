@@ -72,11 +72,7 @@ jobs:
         run: |
           ${{ github.workspace }}/Azule/azule -U -i renamed.ipa -b dev.beefers.vendetta -f tweak.deb -f orion.deb -o pages -n Vendetta
 
-      - name: Upload IPA
-        uses: actions/upload-artifact@v2
-        with:
-          name: Vendetta.ipa
-          path: pages/Vendetta.ipa
+    
     
       - name: Commit IPA
         run: |
@@ -97,10 +93,17 @@ jobs:
 
       - name: Setup Pages
         uses: actions/configure-pages@v3
-      - name: Upload artifact
+      - name: Upload Pages
         uses: actions/upload-pages-artifact@v1
         with:
           path: "pages"
-      - name: Deploy to GitHub Pages
+      - name: Deploy Pages
         id: deployment
         uses: actions/deploy-pages@v1
+    
+
+      - name: Upload IPA
+        uses: actions/upload-artifact@v2
+        with:
+          name: Vendetta.ipa
+          path: pages/Vendetta.ipa

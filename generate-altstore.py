@@ -28,7 +28,7 @@ source = {
                 {
                     "version": f"0.0.{version}",
                     "date": datetime.now().isoformat(),
-                    "localizedDescription": f"{os.environ.get('DESC')} - {os.environ.get('COMMIT')}",
+                    "localizedDescription": f"{os.environ.get('DESCRIPTION')} - {os.environ.get('COMMIT')}",
                     "downloadURL": "https://imlvna.github.io/vendetta-ipa/Vendetta.ipa"
                 }
             ],
