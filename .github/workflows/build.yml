@@ -1,0 +1,59 @@
+on: [ push, workflow_dispatch ]
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+
+            - uses: actions/checkout@v2
+
+            - name: Install Python
+              uses: actions/setup-python@v2
+              with:
+                  python-version: '3.11'
+
+            - name: Clone Azule
+              run: |
+                  git clone https://github.com/Al4ise/Azule ${{ github.workspace }}/Azule
+                  cd ${{ github.workspace }}/Azule
+                  git checkout 27c02b415cff15b1c131a0e95bcc2438023f86da
+            
+            
+            # This will be automated soon enough
+            - name: Fetch IPA
+              run: |
+                  curl -L -o unpatched.ipa https://cdn.discordapp.com/attachments/1085420899907412028/1115376305874149517/Discord_183.0_44779.ipa
+            
+            - name: Fetch Tweak
+              run: |
+                  curl -L -o tweak.zip https://nightly.link/vendetta-mod/VendettaTweak/workflows/build/main/Package%20built%20by%20macos-latest.zip
+                  unzip tweak.zip
+                  mv *.deb tweak.deb
+                  rm tweak.zip
+            
+            - name: Fetch Orion
+              run: |
+                  mkdir orion
+                  cd orion
+                  curl -L -o orion.zip https://github.com/theos/orion/releases/download/1.0.1/Orion_1.0.1.zip
+                  unzip orion.zip
+                  mv dev.theos.orion14*-arm64.deb ../orion.deb
+                  cd ..
+                  rm -rf orion
+            
+            
+            - name: Rename Discord IPA
+              run: |
+                  python3 ./patch-ipa.py
+            
+
+            - name: Install Vendetta
+              run: |
+                  ${{ github.workspace }}/Azule/azule -U -i renamed.ipa -f tweak.deb -f orion.deb -o patched.ipa -o out -n Vendetta.ipa
+                  mv out/Vendetta.ipa Vendetta.ipa
+            
+            - name: Upload IPA
+              uses: actions/upload-artifact@v2
+              with:
+                  name: Vendetta.ipa
+                  path: Vendetta.ipa
