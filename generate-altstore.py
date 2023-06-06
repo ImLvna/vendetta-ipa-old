@@ -33,7 +33,7 @@ for file in os.listdir("ipa"):
     if not file.endswith(".ipa"):
         continue
     numeric_version = int(file.split("-")[0])
-    commithash = file.split("-")[1]
+    commithash = file.split("-")[1].remove('.ipa')
 
     isodate = check_output(["/bin/bash", "-c", f"cd Vendetta;git show -s --format=%ci {commithash}"]).decode("utf-8").split(" ", maxsplit=1)[0]
     commitdesc = check_output(["/bin/bash", "-c", f"cd Vendetta;git show -s --format=%s {commithash}"]).decode("utf-8")
