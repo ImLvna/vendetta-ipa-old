@@ -29,7 +29,7 @@ source = {
 }
 
 
-for file in os.listdir("ipa"):
+for file in os.listdir("pages/ipa"):
     if not file.endswith(".ipa"):
         continue
     numeric_version = int(file.split("-")[0])
