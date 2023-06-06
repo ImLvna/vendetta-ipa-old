@@ -1,59 +1,102 @@
-on: [ push, workflow_dispatch ]
-
+on: [push, workflow_dispatch]
+permissions:
+  contents: write
+  pages: write
+  id-token: write
 jobs:
-    build:
-        runs-on: ubuntu-latest
-        steps:
+  build:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
 
-            - uses: actions/checkout@v2
+      - name: Install Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.11"
 
-            - name: Install Python
-              uses: actions/setup-python@v2
-              with:
-                  python-version: '3.11'
+      - name: Clone Azule
+        run: |
+          git clone https://github.com/Al4ise/Azule ${{ github.workspace }}/Azule
+          cd ${{ github.workspace }}/Azule
+          git checkout 27c02b415cff15b1c131a0e95bcc2438023f86da
 
-            - name: Clone Azule
-              run: |
-                  git clone https://github.com/Al4ise/Azule ${{ github.workspace }}/Azule
-                  cd ${{ github.workspace }}/Azule
-                  git checkout 27c02b415cff15b1c131a0e95bcc2438023f86da
-            
-            
-            # This will be automated soon enough
-            - name: Fetch IPA
-              run: |
-                  curl -L -o unpatched.ipa https://cdn.discordapp.com/attachments/1085420899907412028/1115376305874149517/Discord_183.0_44779.ipa
-            
-            - name: Fetch Tweak
-              run: |
-                  curl -L -o tweak.zip https://nightly.link/vendetta-mod/VendettaTweak/workflows/build/main/Package%20built%20by%20macos-latest.zip
-                  unzip tweak.zip
-                  mv *.deb tweak.deb
-                  rm tweak.zip
-            
-            - name: Fetch Orion
-              run: |
-                  mkdir orion
-                  cd orion
-                  curl -L -o orion.zip https://github.com/theos/orion/releases/download/1.0.1/Orion_1.0.1.zip
-                  unzip orion.zip
-                  mv dev.theos.orion14*-arm64.deb ../orion.deb
-                  cd ..
-                  rm -rf orion
-            
-            
-            - name: Rename Discord IPA
-              run: |
-                  python3 ./patch-ipa.py
-            
+      # This will be automated soon enough
+      - name: Fetch IPA
+        run: |
+          curl -L -o unpatched.ipa https://cdn.discordapp.com/attachments/1085420899907412028/1115376305874149517/Discord_183.0_44779.ipa
 
-            - name: Install Vendetta
-              run: |
-                  ${{ github.workspace }}/Azule/azule -U -i renamed.ipa -f tweak.deb -f orion.deb -o patched.ipa -o out -n Vendetta.ipa
-                  mv out/Vendetta.ipa Vendetta.ipa
-            
-            - name: Upload IPA
-              uses: actions/upload-artifact@v2
-              with:
-                  name: Vendetta.ipa
-                  path: Vendetta.ipa
+      - name: Fetch Tweak
+        run: |
+          curl -L -o tweak.zip https://nightly.link/vendetta-mod/VendettaTweak/workflows/build/main/Package%20built%20by%20macos-latest.zip
+          unzip tweak.zip
+          mv *.deb tweak.deb
+          rm tweak.zip
+
+      - name: Fetch Orion
+        run: |
+          mkdir orion
+          cd orion
+          curl -L -o orion.zip https://github.com/theos/orion/releases/download/1.0.1/Orion_1.0.1.zip
+          unzip orion.zip
+          mv dev.theos.orion14*-arm64.deb ../orion.deb
+          cd ..
+          rm -rf orion
+
+      - name: Rename Discord IPA
+        run: |
+          python3 ./patch-ipa.py
+    
+      - name: Check current commit
+        id: get_commit
+        run: |
+          git clone https://github.com/vendetta-mod/Vendetta
+          cd Vendetta
+          echo "COMMIT=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          cd ..
+    
+      - name: Bump Version
+        id: numerical-version
+        run: |
+          echo $(( $(cat version.txt) + 1 )) > version.txt
+          echo "NUM=$(cat version.txt)" > "$GITHUB_OUTPUT"
+
+      - name: Install Vendetta
+        run: |
+          ${{ github.workspace }}/Azule/azule -U -i renamed.ipa -b dev.beefers.vendetta -f tweak.deb -f orion.deb -o patched.ipa -o ipa -n $(cat version.txt)-${{ steps.get_commit.outputs.COMMIT }}
+
+      - name: Upload IPA
+        uses: actions/upload-artifact@v2
+        with:
+          name: Vendetta.ipa
+          path: ipas/${{ steps.numerical-version.outputs.NUM }}-${{ steps.get_commit.outputs.COMMIT }}.ipa
+    
+      - name: Commit IPA
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add ipas/${{ steps.numerical-version.outputs.NUM }}-${{ steps.get_commit.outputs.COMMIT }}.ipa
+          git add version.txt
+          git commit -m "Update Vendetta.ipa to ${{ steps.get_commit.outputs.COMMIT }}"
+          git push
+
+      - name: Generate Altstore Source
+        run: |
+          python3 ./generate-altstore.py
+    
+      - name: Move around files
+        run: |
+          mkdir pages
+          mv ipas pages
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: "pages"
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
