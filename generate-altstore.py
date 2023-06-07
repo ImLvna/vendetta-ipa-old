@@ -2,29 +2,6 @@ import json
 from datetime import datetime
 import os
 
-
-entitlements = [
-    "com.apple.security.application-groups",
-    "com.apple.developer.associated-domains",
-    "beta-reports-active",
-    "com.apple.developer.storekit.request-data",
-    "get-task-allow",
-    "aps-environment"
-]
-permissions = {
-    "BluetoothAlways": "Discord uses Bluetooth to connect to other devices.",
-    "BluetoothPeripheral": "Discord uses Bluetooth to connect to other devices.",
-    "Camera": "You can take photos and videos inside Discord.",
-    "Contacts": "Discord can access your contacts to help you find friends.",
-    "LocalNetwork": "Discord uses your local network to connect to other devices.",
-    "LocationAlwaysAndWhenInUse": "Discord uses your location to help you find friends.",
-    "LocationWhenInUse": "Discord uses your location to help you find friends.",
-    "LocationAlways": "Discord uses your location to help you find friends.",
-    "Microphone": "You can record audio messages inside Discord.",
-    "PhotoLibraryAdd": "You can save photos and videos inside Discord.",
-    "PhotoLibrary": "You can send photos and videos inside Discord."
-}
-
 source = {
     "name": "Vendetta",
     "identifier": "dev.beefers.vendetta",
