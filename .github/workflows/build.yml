@@ -69,9 +69,9 @@ jobs:
           ${{ github.workspace }}/Azule/azule -U -i renamed.ipa -c 0.0.${{ github.run_number }} -b dev.beefers.vendetta -f tweak.deb orion.deb orion64.deb -o pages -n Vendetta
 
       
-      - name: Generate Altstore Source
+      - name: Generate Altstore/Scarlet Source
         run: |
-          python3 ./generate-altstore.py
+          python3 ./generate-repos.py
         env:
           COMMIT: ${{ steps.get_commit.outputs.COMMIT }}
           DESCRIPTION: ${{ steps.get_commit.outputs.DESC }}

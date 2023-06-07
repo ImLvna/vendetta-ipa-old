@@ -2,7 +2,7 @@ import json
 from datetime import datetime
 import os
 
-source = {
+altsource = {
     "name": "Vendetta",
     "identifier": "dev.beefers.vendetta",
     "description": "A mod for Discord",
@@ -17,7 +17,8 @@ source = {
             "name": "Vendetta",
             "bundleIdentifier": "dev.beefers.vendetta",
             "developerName": "Beef",
-            "localizedDescription": "A mod for Discord",
+            "subtitle": "WARNING: ALTSTORE DOES NOT WORK WITH VENDETTA",
+            "localizedDescription": "WARNING: ALTSTORE DOES NOT WORK WITH VENDETTA\n\n\nA mod for Discord",
             "iconURL": "https://avatars.githubusercontent.com/u/112445065?s=500",
             "tintColor": "#3ab8ba",
             "version": f"0.0.{os.environ.get('NUMBER')}",
@@ -25,7 +26,7 @@ source = {
             "size": os.path.getsize("pages/Vendetta.ipa"),
             "versionDescription": f"{os.environ.get('DESCRIPTION')} - {os.environ.get('COMMIT')[:7]}",
             "downloadURL": "https://imlvna.github.io/vendetta-ipa/Vendetta.ipa",
-            "beta": False,
+            "beta": True,
 
             "appPermissions": {
                 "entitlements": [
@@ -54,5 +55,32 @@ source = {
     ]
 }
 
-with open("pages/vendetta.json", "w", encoding='utf-8') as source_file:
-    json.dump(source, source_file, indent=4)
+with open("pages/altstore.json", "w", encoding='utf-8') as source_file:
+    json.dump(altsource, source_file, indent=4)
+
+
+scarletrepo = {
+    "META": {
+        "repoName": "Vendetta",
+        "repoIcon": "https://avatars.githubusercontent.com/u/112445065?s=500"
+    },
+    "Tweaked": [
+        {
+            "name": "Vendetta",
+            "version": os.environ.get('COMMIT')[:7],
+            "changelog": os.environ.get('DESCRIPTION'),
+            "down": "https://imlvna.github.io/vendetta-ipa/Vendetta.ipa",
+            "category": "Tweaked Apps",
+            "description": "A mod for Discord",
+            "bundleID": "dev.beefers.vendetta",
+            "appstore": "com.hammerandchisel.discord",
+            "icon": "https://avatars.githubusercontent.com/u/112445065?s=500",
+            "contact": {
+                "discord": "https://discord.gg/n9QQ4XhhJP",
+            }
+        }
+    ]
+}
+
+with open("pages/scarlet.json", "w", encoding='utf-8') as source_file:
+    json.dump(scarletrepo, source_file, indent=4)
