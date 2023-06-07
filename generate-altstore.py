@@ -51,8 +51,27 @@ source = {
             "beta": False,
 
             "appPermissions": {
-                "entitlements": ({"name":entitlement} for entitlement in entitlements),
-                "privacy": ({"name":perm, "usageDescription":desc} for perm, desc in permissions.items())
+                "entitlements": [
+                    {'name': 'com.apple.security.application-groups'},
+                    {'name': 'com.apple.developer.associated-domains'},
+                    {'name': 'beta-reports-active'},
+                    {'name': 'com.apple.developer.storekit.request-data'},
+                    {'name': 'get-task-allow'},
+                    {'name': 'aps-environment'}
+                ],
+                "privacy": [
+                    {'name': 'BluetoothAlways', 'usageDescription': 'Discord uses Bluetooth to connect to other devices.'},
+                    {'name': 'BluetoothPeripheral', 'usageDescription': 'Discord uses Bluetooth to connect to other devices.'},
+                    {'name': 'Camera', 'usageDescription': 'You can take photos and videos inside Discord.'},
+                    {'name': 'Contacts', 'usageDescription': 'Discord can access your contacts to help you find friends.'},
+                    {'name': 'LocalNetwork', 'usageDescription': 'Discord uses your local network to connect to other devices.'},
+                    {'name': 'LocationAlwaysAndWhenInUse', 'usageDescription': 'Discord uses your location to help you find friends.'},
+                    {'name': 'LocationWhenInUse', 'usageDescription': 'Discord uses your location to help you find friends.'},
+                    {'name': 'LocationAlways', 'usageDescription': 'Discord uses your location to help you find friends.'},
+                    {'name': 'Microphone', 'usageDescription': 'You can record audio messages inside Discord.'},
+                    {'name': 'PhotoLibraryAdd', 'usageDescription': 'You can save photos and videos inside Discord.'},
+                    {'name': 'PhotoLibrary', 'usageDescription': 'You can send photos and videos inside Discord.'}
+                ]
             }
         }
     ]
