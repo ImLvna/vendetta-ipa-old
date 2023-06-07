@@ -41,7 +41,8 @@ jobs:
           cd orion
           curl -L -o orion.zip https://github.com/theos/orion/releases/download/1.0.1/Orion_1.0.1.zip
           unzip orion.zip
-          mv dev.theos.orion14*-arm64.deb ../orion.deb
+          mv dev.theos.orion14*-arm.deb ../orion.deb
+          mv dev.theos.orion14*-arm64.deb ../orion64.deb
           cd ..
           rm -rf orion
 
@@ -65,7 +66,7 @@ jobs:
 
       - name: Install Vendetta
         run: |
-          ${{ github.workspace }}/Azule/azule -U -i renamed.ipa -c 0.0.${{ github.run_number }} -b dev.beefers.vendetta -f tweak.deb -f orion.deb -o pages -n Vendetta
+          ${{ github.workspace }}/Azule/azule -U -i renamed.ipa -c 0.0.${{ github.run_number }} -b dev.beefers.vendetta -f tweak.deb -f orion.deb -f orion64.deb -o pages -n Vendetta
 
       
       - name: Generate Altstore Source
