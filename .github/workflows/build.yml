@@ -65,7 +65,7 @@ jobs:
 
       - name: Install Vendetta
         run: |
-          ${{ github.workspace }}/Azule/azule -U -i renamed.ipa -c ${{ github.run_number }} -b dev.beefers.vendetta -f tweak.deb -f orion.deb -o pages -n Vendetta
+          ${{ github.workspace }}/Azule/azule -U -i renamed.ipa -c 0.0.${{ github.run_number }} -b dev.beefers.vendetta -f tweak.deb -f orion.deb -o pages -n Vendetta
 
       
       - name: Generate Altstore Source
