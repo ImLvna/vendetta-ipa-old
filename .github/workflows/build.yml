@@ -42,7 +42,6 @@ jobs:
           curl -L -o orion.zip https://github.com/theos/orion/releases/download/1.0.1/Orion_1.0.1.zip
           unzip orion.zip
           mv dev.theos.orion14*-arm.deb ../orion.deb
-          mv dev.theos.orion14*-arm64.deb ../orion64.deb
           cd ..
           rm -rf orion
 
