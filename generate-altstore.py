@@ -20,15 +20,12 @@ source = {
             "localizedDescription": "A mod for Discord",
             "iconURL": "https://avatars.githubusercontent.com/u/112445065?s=500",
             "tintColor": "#3ab8ba",
-            "versions": [
-                {
-                    "version": f"0.0.{os.environ.get('NUMBER')}",
-                    "date": datetime.now().isoformat(),
-                    "size": os.path.getsize("pages/Vendetta.ipa") >> 20,
-                    "localizedDescription": f"{os.environ.get('DESCRIPTION')} - {os.environ.get('COMMIT')}",
-                    "downloadURL": "https://imlvna.github.io/vendetta-ipa/Vendetta.ipa"
-                }
-            ],
+            "version": f"0.0.{os.environ.get('NUMBER')}",
+            "versionDate": datetime.now().isoformat(),
+            "size": os.path.getsize("pages/Vendetta.ipa"),
+            "versionDescription": f"{os.environ.get('DESCRIPTION')} - {os.environ.get('COMMIT')}",
+            "downloadURL": "https://imlvna.github.io/vendetta-ipa/Vendetta.ipa",
+            "beta": False
         }
     ]
 }
