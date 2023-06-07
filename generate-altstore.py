@@ -23,7 +23,7 @@ source = {
             "version": f"0.0.{os.environ.get('NUMBER')}",
             "versionDate": datetime.now().isoformat(),
             "size": os.path.getsize("pages/Vendetta.ipa"),
-            "versionDescription": f"{os.environ.get('DESCRIPTION')} - {os.environ.get('COMMIT')}",
+            "versionDescription": f"{os.environ.get('DESCRIPTION')} - {os.environ.get('COMMIT')[:7]}",
             "downloadURL": "https://imlvna.github.io/vendetta-ipa/Vendetta.ipa",
             "beta": False
         }
