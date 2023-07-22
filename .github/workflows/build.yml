@@ -26,7 +26,7 @@ jobs:
       # This will be automated soon enough
       - name: Fetch IPA
         run: |
-          curl -L -o unpatched.ipa https://cdn.discordapp.com/attachments/1085420899907412028/1115376305874149517/Discord_183.0_44779.ipa
+          curl -L -o unpatched.ipa https://cdn.discordapp.com/attachments/1085420899907412028/1130962775951282226/Discord_188.0_46775.ipa
 
       - name: Fetch Tweak
         run: |
