@@ -1,13 +1,12 @@
-on: [push, workflow_dispatch]
-permissions:
-  contents: write
-  pages: write
-  id-token: write
+on:
+  workflow_dispatch:
+    inputs:
+      ipa:
+        description: "IPA to use"
+        required: true
+
 jobs:
   build:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -17,16 +16,15 @@ jobs:
         with:
           python-version: "3.11"
 
+      - name: Get ipa
+        run: |
+          curl -L -o discord.ipa ${{ github.event.inputs.ipa }}
+
       - name: Clone Azule
         run: |
           git clone https://github.com/Al4ise/Azule ${{ github.workspace }}/Azule
           cd ${{ github.workspace }}/Azule
           git checkout 27c02b415cff15b1c131a0e95bcc2438023f86da
-
-      # This will be automated soon enough
-      - name: Fetch IPA
-        run: |
-          curl -L -o unpatched.ipa https://cdn.discordapp.com/attachments/1085420899907412028/1130962775951282226/Discord_188.0_46775.ipa
 
       - name: Fetch Tweak
         run: |
@@ -48,17 +46,7 @@ jobs:
       - name: Rename Discord IPA
         run: |
           python3 ./patch-ipa.py
-    
-      - name: Check current commit
-        id: get_commit
-        run: |
-          git clone https://github.com/vendetta-mod/Vendetta
-          cd Vendetta
-          echo "COMMIT=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
-          echo "DESC=$(git log -1 --format=%s)" >> "$GITHUB_OUTPUT"
-          cd ..
 
-    
       - name: Move around files
         run: |
           mkdir pages
@@ -66,27 +54,6 @@ jobs:
       - name: Install Vendetta
         run: |
           ${{ github.workspace }}/Azule/azule -U -i renamed.ipa -c 0.0.${{ github.run_number }} -b dev.beefers.vendetta -f 'tweak.deb' 'orion.deb' -o pages -n Vendetta
-
-      
-      - name: Generate Altstore/Scarlet Source
-        run: |
-          python3 ./generate-repos.py
-        env:
-          COMMIT: ${{ steps.get_commit.outputs.COMMIT }}
-          DESCRIPTION: ${{ steps.get_commit.outputs.DESC }}
-          NUMBER: ${{ github.run_number }}
-    
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v3
-      - name: Upload Pages
-        uses: actions/upload-pages-artifact@v1
-        with:
-          path: "pages"
-      - name: Deploy Pages
-        id: deployment
-        uses: actions/deploy-pages@v1
-    
 
       - name: Upload IPA
         uses: actions/upload-artifact@v3
