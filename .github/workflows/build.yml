@@ -43,20 +43,21 @@ jobs:
           cd ..
           rm -rf orion
 
+      - name: Fetch sideload fix
+        run: |
+          curl -L -o sideloadfix.deb https://github.com/m4fn3/DiscordSideloadFix/releases/download/v1.0.0/com.m4fn3.discord-sideload-fix_1.0.0_iphoneos-arm.deb
+
       - name: Rename Discord IPA
         run: |
           python3 ./patch-ipa.py
 
-      - name: Move around files
-        run: |
-          mkdir pages
-
       - name: Install Vendetta
         run: |
-          ${{ github.workspace }}/Azule/azule -U -i renamed.ipa -c 0.0.${{ github.run_number }} -b dev.beefers.vendetta -f 'tweak.deb' 'orion.deb' -o pages -n Vendetta
+          mkdir out
+          ${{ github.workspace }}/Azule/azule -U -i renamed.ipa -c 0.0.${{ github.run_number }} -b dev.beefers.vendetta -f 'tweak.deb' 'orion.deb' 'sideloadfix.deb' -o out -n Vendetta
 
       - name: Upload IPA
         uses: actions/upload-artifact@v3
         with:
           name: Vendetta.ipa
-          path: pages/Vendetta.ipa
+          path: out/Vendetta.ipa
