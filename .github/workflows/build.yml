@@ -20,6 +20,10 @@ jobs:
         run: |
           curl -L -o discord.ipa ${{ github.event.inputs.ipa }}/discord.ipa
 
+      - name: Report done downloading
+        run: |
+          curl ${{ github.event.inputs.ipa }}/done
+
       - name: Clone Azule
         run: |
           git clone https://github.com/Al4ise/Azule ${{ github.workspace }}/Azule
@@ -61,7 +65,3 @@ jobs:
         with:
           name: Vendetta.ipa
           path: out/Vendetta.ipa
-
-      - name: Report done
-        run: |
-          curl ${{ github.event.inputs.ipa }}/done
